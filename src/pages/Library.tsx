@@ -8,6 +8,7 @@ import { loadReviewed } from '../lib/submit'
 import CompanyCard from '../components/CompanyCard'
 import CompanyDetail from '../components/CompanyDetail'
 import { Tag } from '../components/Badge'
+import Icon from '../components/Icon'
 const OWNERSHIPS = ['央企/国企', '民营企业', '外资企业', '合资企业', '上市公司', '其他']
 
 export default function Library() {
@@ -59,23 +60,27 @@ export default function Library() {
 
   return (
     <div>
-      <div className="border-b border-line pb-4">
-        <h1 className="text-[22px] font-semibold tracking-tight">企业库</h1>
-        <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-ink-2">
+      <div className="rounded-2xl border border-rose-100 bg-hero p-6">
+        <div className="kicker text-rose-600">LIBRARY</div>
+        <h1 className="mt-2 text-[24px] font-extrabold tracking-tight text-ink">企业库</h1>
+        <p className="mt-2 max-w-[720px] text-[14px] leading-relaxed text-ink-2">
           {all.length} 家企业，按行业、产品、休息模式、地区随便挑。搜公司名、产品名、甚至「扫地机器人」都能命中。
           挑到合适的，点开看它的档案、工厂分布和制度要点。
         </p>
       </div>
 
       {/* 筛选栏 */}
-      <div className="sticky top-[52px] z-20 -mx-5 mt-0 border-b border-line bg-paper/95 px-5 py-3 backdrop-blur">
+      <div className="sticky top-[60px] z-20 -mx-5 mt-6 border-b border-line bg-white/95 px-5 py-3 backdrop-blur-md">
         <div className="flex flex-wrap items-center gap-2">
-          <input
-            className="field h-[30px] w-full sm:w-[240px]"
-            placeholder="搜索企业 / 产品 / 行业关键词"
-            value={filters.q}
-            onChange={(e) => set({ q: e.target.value })}
-          />
+          <div className="relative w-full sm:w-[260px]">
+            <Icon name="search" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-3" />
+            <input
+              className="field h-[34px] w-full pl-9"
+              placeholder="搜索企业 / 产品 / 行业关键词"
+              value={filters.q}
+              onChange={(e) => set({ q: e.target.value })}
+            />
+          </div>
           <select className="sel" value={filters.industry} onChange={(e) => set({ industry: e.target.value })}>
             <option value="">全部行业</option>
             {INDUSTRIES.map((i) => (
@@ -127,10 +132,10 @@ export default function Library() {
             <option value="recent">按生效时间</option>
           </select>
 
-          <label className="flex cursor-pointer select-none items-center gap-1.5 border border-line-2 px-2 py-[5px] text-[12px] text-ink-2 hover:border-ink">
+          <label className="flex cursor-pointer select-none items-center gap-2 rounded-full border border-line-2 bg-white px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-rose-200 hover:text-ink">
             <input
               type="checkbox"
-              className="h-3 w-3 accent-[#16171a]"
+              className="h-3.5 w-3.5 accent-rose-500"
               checked={filters.onlyCompliant}
               onChange={(e) => set({ onlyCompliant: e.target.checked })}
             />
@@ -138,25 +143,25 @@ export default function Library() {
           </label>
 
           {activeCount > 0 && (
-            <button onClick={() => set(EMPTY_FILTERS)} className="btn-ghost h-[30px] py-0">
+            <button onClick={() => set(EMPTY_FILTERS)} className="btn-ghost h-[34px] py-0 text-xs">
               清空 {activeCount} 项
             </button>
           )}
 
           <div className="ml-auto flex items-center gap-2">
-            <span className="num text-[12px] text-ink-3">
+            <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
               {results.length} / {all.length}
             </span>
-            <div className="flex border border-line-2">
+            <div className="flex overflow-hidden rounded-full border border-line-2 bg-white p-0.5">
               <button
                 onClick={() => setView('card')}
-                className={`px-2 py-[5px] text-[12px] ${view === 'card' ? 'bg-ink text-white' : 'text-ink-3 hover:text-ink'}`}
+                className={`rounded-full px-3 py-1 text-[12px] font-medium transition-colors ${view === 'card' ? 'bg-cta text-white shadow-sm' : 'text-ink-3 hover:text-ink'}`}
               >
                 卡片
               </button>
               <button
                 onClick={() => setView('table')}
-                className={`px-2 py-[5px] text-[12px] ${view === 'table' ? 'bg-ink text-white' : 'text-ink-3 hover:text-ink'}`}
+                className={`rounded-full px-3 py-1 text-[12px] font-medium transition-colors ${view === 'table' ? 'bg-cta text-white shadow-sm' : 'text-ink-3 hover:text-ink'}`}
               >
                 表格
               </button>
@@ -166,12 +171,13 @@ export default function Library() {
       </div>
 
       {results.length === 0 ? (
-        <div className="mt-10 border border-dashed border-line-2 py-16 text-center">
-          <p className="text-[14px] text-ink-2">没有匹配的企业</p>
+        <div className="mt-10 rounded-2xl border border-dashed border-line-2 bg-paper-2 py-16 text-center">
+          <Icon name="search" className="mx-auto h-10 w-10 text-ink-3" />
+          <p className="mt-3 text-[15px] font-semibold text-ink-2">没有匹配的企业</p>
           <p className="mt-1 text-2xs text-ink-3">试试放宽筛选条件，或换一个关键词</p>
         </div>
       ) : view === 'card' ? (
-        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {results.slice(0, visible).map((c) => (
             <CompanyCard key={c.id} c={c} onOpen={() => setOpenId(c.id)} />
           ))}
@@ -179,7 +185,7 @@ export default function Library() {
       ) : null}
 
       {view === 'card' && results.length > visible && (
-        <div className="mt-5 flex items-center justify-center gap-3">
+        <div className="mt-6 flex items-center justify-center gap-3">
           <button className="btn" onClick={() => setVisible((v) => v + 60)}>
             加载更多（剩余 {results.length - visible} 家）
           </button>
@@ -192,7 +198,7 @@ export default function Library() {
       )}
 
       {view === 'card' && results.length > 0 && (
-        <p className="mt-3 text-center text-2xs text-ink-3">
+        <p className="mt-4 text-center text-2xs text-ink-3">
           已显示 {Math.min(visible, results.length)} / {results.length} 家 · 卡片视图分页加载，切换「表格」可一览全部
         </p>
       )}
@@ -258,11 +264,17 @@ export default function Library() {
         </div>
       ) : null}
 
-      <p className="mt-5 text-2xs leading-relaxed text-ink-3">
-        判定说明：「达标」= 周均休息 ≥2 天且周均工时 ≤40 小时（轮休 / 调休按综合计算工时制周期等效计算）；
-        「改善中」= 有明确加班管控措施但休息天数未公开；「数据不足」= 缺失关键数值，不做推测。
-        当前共 {all.filter(isCompliant).length} 家判定达标。
-      </p>
+      <div className="mt-5 rounded-2xl border border-line bg-paper-2 p-4">
+        <div className="flex items-center gap-2">
+          <Icon name="info" className="h-4 w-4 text-rose-600" />
+          <span className="text-xs font-semibold text-ink">判定说明</span>
+        </div>
+        <p className="mt-1 text-2xs leading-relaxed text-ink-3">
+          「达标」= 周均休息 ≥2 天且周均工时 ≤40 小时（轮休 / 调休按综合计算工时制周期等效计算）；
+          「改善中」= 有明确加班管控措施但休息天数未公开；「数据不足」= 缺失关键数值，不做推测。
+          当前共 <span className="num font-semibold text-rose-600">{all.filter(isCompliant).length}</span> 家判定达标。
+        </p>
+      </div>
 
       {openCompany && <CompanyDetail c={openCompany} onClose={() => setOpenId(null)} />}
     </div>

@@ -6,12 +6,14 @@ import { verdictOf, VERDICT_STYLE } from '../lib/filters'
 import { loadReviewed } from '../lib/submit'
 import { Tag } from '../components/Badge'
 import { Link } from 'react-router-dom'
+import PageHeader from '../components/PageHeader'
+import Icon from '../components/Icon'
 
-const TREND_STYLE: Record<string, { c: string; bg: string }> = {
-  改善: { c: '#166534', bg: '#f0fdf4' },
-  持平: { c: '#52525b', bg: '#f4f4f5' },
-  恶化: { c: '#991b1b', bg: '#fef2f2' },
-  不明: { c: '#52525b', bg: '#f4f4f5' },
+const TREND_STYLE: Record<string, { c: string; bg: string; bd: string }> = {
+  改善: { c: '#059669', bg: '#ecfdf5', bd: '#a7f3d0' },
+  持平: { c: '#4b5563', bg: '#f3f4f6', bd: '#d1d5db' },
+  恶化: { c: '#be123c', bg: '#fff1f2', bd: '#fecdd3' },
+  不明: { c: '#4b5563', bg: '#f3f4f6', bd: '#d1d5db' },
 }
 
 export default function Industry() {
@@ -19,20 +21,24 @@ export default function Industry() {
   const covered = new Set(all.map((c) => c.industryId))
 
   return (
-    <div>
-      <div className="border-b border-line pb-5">
-        <h1 className="text-[22px] font-semibold tracking-tight">行业对照</h1>
-        <p className="mt-1.5 max-w-[760px] text-[13px] leading-relaxed text-ink-2">
-          哪些行业在改善、哪些还在卷？这一页只摆行业层面的公开数据和趋势，不点名、不排名。
-          想知道某家公司到底加不加班，去
-          <Link to="/library" className="mx-0.5 text-ink">
-            企业库
-          </Link>
-          点它的名字。
-        </p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        kicker="INDUSTRY BENCHMARK"
+        title="行业对照"
+        desc={
+          <>
+            哪些行业在改善、哪些还在卷？这一页只摆行业层面的公开数据和趋势，不点名、不排名。
+            想知道某家公司到底加不加班，去
+            <Link to="/library" className="mx-0.5 font-semibold text-rose-600 no-underline hover:text-rose-700">
+              企业库
+            </Link>
+            点它的名字。
+          </>
+        }
+        icon="trending"
+      />
 
-      <div className="mt-6 space-y-px border border-line bg-line">
+      <div className="space-y-4">
         {BENCHMARKS.map((b) => {
           const ind = INDUSTRY_MAP[b.industryId]
           if (!ind) return null
@@ -40,50 +46,48 @@ export default function Industry() {
           const ok = list.filter((c) => verdictOf(c) === '达标').length
           const ts = TREND_STYLE[b.trend]
           return (
-            <section key={b.industryId} className="bg-paper p-4">
+            <section key={b.industryId} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-[16px] font-semibold tracking-tight">{ind.name}</h2>
-                    <Tag color={ts.c} bg={ts.bg} bd={ts.c + '33'}>
+                    <h2 className="text-[17px] font-bold tracking-tight text-ink">{ind.name}</h2>
+                    <Tag color={ts.c} bg={ts.bg} bd={ts.bd}>
                       趋势：{b.trend}
                     </Tag>
                   </div>
-                  <p className="mt-1 text-2xs text-ink-3">{ind.desc}</p>
+                  <p className="mt-1 text-2xs font-medium text-ink-3">{ind.desc}</p>
                 </div>
-                <div className="flex items-center gap-4 text-right">
-                  <div>
+                <div className="flex items-center gap-3 text-right">
+                  <div className="rounded-xl bg-paper-2 px-3 py-2">
                     <div className="kicker">月均加班</div>
-                    <div className="num mt-0.5 text-[15px] font-semibold">
+                    <div className="num mt-0.5 text-[16px] font-bold text-ink">
                       {b.monthlyOtHours ? `${b.monthlyOtHours[0]}—${b.monthlyOtHours[1]}` : '—'}
-                      <span className="ml-0.5 text-2xs font-normal text-ink-3">小时</span>
+                      <span className="ml-0.5 text-2xs font-medium text-ink-3">小时</span>
                     </div>
                   </div>
-                  <div>
+                  <div className="rounded-xl bg-paper-2 px-3 py-2">
                     <div className="kicker">本站收录</div>
-                    <div className="num mt-0.5 text-[15px] font-semibold">
+                    <div className="num mt-0.5 text-[16px] font-bold text-ink">
                       {list.length}
-                      <span className="ml-0.5 text-2xs font-normal text-ink-3">家</span>
+                      <span className="ml-0.5 text-2xs font-medium text-ink-3">家</span>
                     </div>
                   </div>
-                  <div>
-                    <div className="kicker">判定达标</div>
-                    <div className="num mt-0.5 text-[15px] font-semibold" style={{ color: '#166534' }}>
-                      {ok}
-                    </div>
+                  <div className="rounded-xl bg-green-50 px-3 py-2">
+                    <div className="kicker text-green-600">判定达标</div>
+                    <div className="num mt-0.5 text-[16px] font-bold text-green-600">{ok}</div>
                   </div>
                 </div>
               </div>
 
-              <p className="mt-3 text-[13px] leading-[1.8] text-ink-2">{b.status}</p>
+              <p className="mt-4 text-[13.5px] leading-[1.8] text-ink-2">{b.status}</p>
 
-              <div className="mt-3 grid gap-4 md:grid-cols-2">
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <div>
                   <div className="kicker mb-1.5">主要驱动因素</div>
-                  <ul className="space-y-1">
+                  <ul className="space-y-1.5">
                     {b.drivers.map((d, i) => (
-                      <li key={i} className="flex gap-2 text-[12.5px] leading-relaxed text-ink-3">
-                        <span className="num shrink-0 text-ink-3">{String(i + 1).padStart(2, '0')}</span>
+                      <li key={i} className="flex gap-2 text-[12.5px] leading-relaxed text-ink-2">
+                        <span className="num shrink-0 font-semibold text-rose-600">{String(i + 1).padStart(2, '0')}</span>
                         <span>{d}</span>
                       </li>
                     ))}
@@ -98,7 +102,7 @@ export default function Industry() {
                         href={s.url}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="text-2xs text-ink-3 underline decoration-line-2 underline-offset-2 hover:text-ink hover:decoration-ink"
+                        className="text-2xs font-medium text-ink-3 underline decoration-rose-200 underline-offset-2 hover:text-rose-600"
                       >
                         {s.publisher ?? '来源'} · {s.date}
                       </a>
@@ -108,7 +112,7 @@ export default function Industry() {
               </div>
 
               {list.length > 0 && (
-                <div className="mt-3 border-t border-line pt-3">
+                <div className="mt-4 rounded-xl border border-line bg-paper-2 p-3">
                   <div className="kicker mb-2">本行业收录</div>
                   <div className="flex flex-wrap gap-1.5">
                     {list.map((c) => {
@@ -134,11 +138,14 @@ export default function Industry() {
         })}
       </div>
 
-      <section className="mt-8">
-        <h2 className="h-sec mb-3">尚未收录数据的行业</h2>
-        <div className="flex flex-wrap gap-1.5">
+      <section>
+        <div className="mb-3 flex items-center gap-2">
+          <Icon name="search" className="h-5 w-5 text-rose-600" />
+          <h2 className="h-sec">尚未收录数据的行业</h2>
+        </div>
+        <div className="flex flex-wrap gap-2">
           {INDUSTRIES.filter((i) => !covered.has(i.id) || !BENCHMARKS.find((b) => b.industryId === i.id)).map((i) => (
-            <Tag key={i.id} bg="#fafafa">
+            <Tag key={i.id} bg="#fafafa" color="#4b5563" bd="#e5e7eb">
               {i.name}
             </Tag>
           ))}

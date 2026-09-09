@@ -11,11 +11,11 @@
     font-feature-settings: 'tnum' on, 'lnum' on;
   }
   ::selection {
-    background: #16171a;
+    background: #e11d48;
     color: #fff;
   }
   a {
-    @apply text-ink underline decoration-line-2 underline-offset-2 hover:decoration-ink;
+    @apply text-ink underline decoration-rose-300 underline-offset-2 hover:decoration-rose-500;
   }
 }
 
@@ -27,46 +27,52 @@
     @apply border-t border-line;
   }
   .kicker {
-    @apply text-2xs uppercase tracking-[0.14em] text-ink-3;
+    @apply text-2xs font-semibold uppercase tracking-[0.12em] text-ink-3;
   }
   .h-sec {
-    @apply text-[15px] font-semibold tracking-tight;
+    @apply text-base font-bold tracking-tight text-ink;
   }
   .card {
-    @apply border border-line bg-paper;
+    @apply rounded-2xl border border-line bg-paper shadow-soft transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
   }
   .btn {
-    @apply inline-flex items-center justify-center border border-ink bg-ink px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-85 disabled:opacity-40;
+    @apply inline-flex items-center justify-center rounded-full bg-cta px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-cta-hover hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center border border-line-2 bg-paper px-3.5 py-1.5 text-[13px] text-ink transition-colors hover:border-ink hover:bg-paper-3;
+    @apply inline-flex items-center justify-center rounded-full border border-line-2 bg-white/80 px-5 py-2.5 text-sm font-medium text-ink-2 backdrop-blur transition-all hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600;
   }
   .field {
-    @apply w-full border border-line-2 bg-paper px-2.5 py-1.5 text-[13px] text-ink outline-none focus:border-ink;
+    @apply w-full rounded-xl border border-line-2 bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-rose-400 focus:ring-2 focus:ring-rose-100;
   }
   .sel {
-    @apply h-[30px] border border-line-2 bg-paper px-2 text-[12px] text-ink outline-none focus:border-ink;
+    @apply h-[38px] rounded-xl border border-line-2 bg-paper px-3 text-sm text-ink outline-none transition-colors focus:border-rose-400;
   }
   .tag {
-    @apply inline-flex items-center border px-1.5 py-[1px] text-2xs leading-4;
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-2xs font-medium leading-none;
   }
   .num {
     @apply font-mono tabular-nums;
+  }
+  .pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors;
+  }
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-cta;
   }
 }
 
 /* 表格 */
 .tbl {
-  @apply w-full border-collapse text-[13px];
+  @apply w-full border-collapse text-sm;
 }
 .tbl th {
-  @apply border-b border-line bg-paper-2 px-2.5 py-2 text-left text-2xs font-medium uppercase tracking-wide text-ink-3;
+  @apply border-b border-line bg-paper-2 px-3 py-2.5 text-left text-2xs font-semibold uppercase tracking-wide text-ink-3;
 }
 .tbl td {
-  @apply border-b border-line px-2.5 py-2 align-top;
+  @apply border-b border-line px-3 py-2.5 align-top;
 }
 .tbl tr:hover td {
-  @apply bg-paper-2;
+  @apply bg-rose-50/50;
 }
 
 /* 滚动条 */
@@ -75,8 +81,12 @@
   height: 8px;
 }
 .scroll-thin::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
 }
 .scroll-thin::-webkit-scrollbar-track {
-  background: #f4f4f5;
+  background: transparent;
 }

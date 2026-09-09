@@ -88,11 +88,11 @@ export function verdictOf(c: Company): Verdict {
 }
 
 export const VERDICT_STYLE: Record<Verdict, { bg: string; fg: string; bd: string }> = {
-  达标: { bg: '#f0fdf4', fg: '#166534', bd: '#bbf7d0' },
-  基本合规: { bg: '#eff6ff', fg: '#1d4ed8', bd: '#bfdbfe' },
-  改善中: { bg: '#fefce8', fg: '#a16207', bd: '#fde68a' },
-  未达标: { bg: '#fef2f2', fg: '#991b1b', bd: '#fecaca' },
-  数据不足: { bg: '#f4f4f5', fg: '#52525b', bd: '#e4e4e7' },
+  达标: { bg: '#ecfdf5', fg: '#047857', bd: '#a7f3d0' },
+  基本合规: { bg: '#eff6ff', fg: '#2563eb', bd: '#bfdbfe' },
+  改善中: { bg: '#fffbeb', fg: '#b45309', bd: '#fde68a' },
+  未达标: { bg: '#fff1f2', fg: '#be123c', bd: '#fecdd3' },
+  数据不足: { bg: '#f3f4f6', fg: '#4b5563', bd: '#d1d5db' },
 }
 
 export function applyFilters(list: Company[], f: FilterState): Company[] {

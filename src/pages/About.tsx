@@ -1,44 +1,47 @@
 import { COMPANIES, LAST_UPDATED } from '../data/companies'
 import { INDUSTRIES } from '../data/industries'
 import { REST_PATTERNS } from '../data/restPatterns'
+import PageHeader from '../components/PageHeader'
+import Icon from '../components/Icon'
 
 export default function About() {
   return (
-    <div>
-      <div className="border-b border-line pb-5">
-        <h1 className="text-[22px] font-semibold tracking-tight">关于本站</h1>
-        <p className="mt-1.5 max-w-[760px] text-[13px] leading-relaxed text-ink-2">
-          一个公开信息整理工具。我们想让「哪些公司真双休、哪些只是嘴上说说」这件事，变得可查、可比对、可溯源——
-          找工作、做消费选择，都能少踩点坑。
-        </p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        kicker="ABOUT"
+        title="关于本站"
+        desc="一个公开信息整理工具。我们想让「哪些公司真双休、哪些只是嘴上说说」这件事，变得可查、可比对、可溯源——找工作、做消费选择，都能少踩点坑。"
+        icon="info"
+      />
 
-      <section className="mt-6 grid gap-px border border-line bg-line md:grid-cols-3">
-        <div className="bg-paper p-4">
-          <div className="kicker">收录企业</div>
-          <div className="num mt-1 text-[24px] font-semibold">{COMPANIES.length}</div>
-          <p className="mt-1 text-2xs text-ink-3">全部附来源链接</p>
-        </div>
-        <div className="bg-paper p-4">
-          <div className="kicker">行业分类</div>
-          <div className="num mt-1 text-[24px] font-semibold">{INDUSTRIES.length}</div>
-          <p className="mt-1 text-2xs text-ink-3">每个行业标注细分与产品类型</p>
-        </div>
-        <div className="bg-paper p-4">
-          <div className="kicker">休息模式</div>
-          <div className="num mt-1 text-[24px] font-semibold">{REST_PATTERNS.length}</div>
-          <p className="mt-1 text-2xs text-ink-3">含轮休、弹性、缩短工时</p>
-        </div>
+      <section className="grid gap-4 md:grid-cols-3">
+        {[
+          { k: '收录企业', v: COMPANIES.length, sub: '全部附来源链接', i: 'building' },
+          { k: '行业分类', v: INDUSTRIES.length, sub: '每个行业标注细分与产品类型', i: 'briefcase' },
+          { k: '休息模式', v: REST_PATTERNS.length, sub: '含轮休、弹性、缩短工时', i: 'clock' },
+        ].map((x) => (
+          <div key={x.k} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+              <Icon name={x.i as any} className="h-5 w-5" />
+            </div>
+            <div className="kicker mt-3">{x.k}</div>
+            <div className="num mt-1 text-[28px] font-bold text-ink">{x.v}</div>
+            <p className="mt-1 text-2xs font-medium text-ink-3">{x.sub}</p>
+          </div>
+        ))}
       </section>
 
-      <section className="mt-8">
-        <h2 className="h-sec mb-3">为什么做这个</h2>
-        <div className="space-y-3 text-[13.5px] leading-[1.85] text-ink-2">
+      <section>
+        <div className="mb-3 flex items-center gap-2">
+          <Icon name="heart" className="h-5 w-5 text-rose-600" />
+          <h2 className="h-sec">为什么做这个</h2>
+        </div>
+        <div className="space-y-3 rounded-2xl border border-line bg-white p-5 text-[14px] leading-[1.85] text-ink-2 shadow-soft">
           <p>
             双休日工作制 1995 年 5 月 1 日就写进了国家规定，可快三十年了，很多人还是没真正休上。
             2025 年以来情况开始变化：工信部、中国汽车工业协会先后表态整治「内卷式」竞争，
             一批头部企业主动取消大小周、强制下班、关闭周末食堂，加上
-            <strong className="font-semibold">《欧盟市场禁止强迫劳动产品条例》2027 年底实施</strong>
+            <strong className="font-semibold text-ink">《欧盟市场禁止强迫劳动产品条例》2027 年底实施</strong>
             带来的出口合规压力，工时制度正在从「卷时长」转向「卷效率」。
           </p>
           <p>
@@ -52,9 +55,12 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mt-8">
-        <h2 className="h-sec mb-3">口径上的三个坚持</h2>
-        <div className="space-y-px border border-line bg-line">
+      <section>
+        <div className="mb-3 flex items-center gap-2">
+          <Icon name="shield" className="h-5 w-5 text-rose-600" />
+          <h2 className="h-sec">口径上的三个坚持</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
           {[
             {
               t: '轮休也算双休',
@@ -69,17 +75,17 @@ export default function About() {
               d: '同一家企业里，总部职能岗标准双休、门店一线排班轮休、产线三班倒是常态。本站记录具体覆盖范围，不做整体定性。',
             },
           ].map((x) => (
-            <div key={x.t} className="bg-paper p-4">
-              <div className="text-[14px] font-semibold">{x.t}</div>
-              <p className="mt-1.5 text-[13px] leading-[1.8] text-ink-2">{x.d}</p>
+            <div key={x.t} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+              <div className="text-[15px] font-bold text-ink">{x.t}</div>
+              <p className="mt-2 text-[13px] leading-[1.8] text-ink-2">{x.d}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-8 border border-line bg-paper-2 p-4">
+      <section className="rounded-2xl border border-line bg-paper-2 p-5">
         <div className="kicker">免责声明</div>
-        <div className="mt-2 space-y-2 text-[12.5px] leading-[1.8] text-ink-2">
+        <div className="mt-2 space-y-2 text-[13px] leading-[1.8] text-ink-2">
           <p>
             本站内容均整理自公开渠道，不构成对企业的评价、评级、推荐或投资建议，也不构成法律意见。
             企业制度会随时调整，本站无法保证信息的实时性与完整性。
@@ -93,7 +99,7 @@ export default function About() {
         </div>
       </section>
 
-      <p className="mt-6 text-2xs text-ink-3">数据版本更新于 {LAST_UPDATED}</p>
+      <p className="text-2xs font-medium text-ink-3">数据版本更新于 {LAST_UPDATED}</p>
     </div>
   )
 }
