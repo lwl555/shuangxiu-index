@@ -1,0 +1,45 @@
+name: 部署到 GitHub Pages
+
+# 用于「代码推送」或「手动触发」时构建并部署。
+# 注意：每日自动采集由 daily-crawl.yml 自带 deploy 步骤完成（Actions 用 GITHUB_TOKEN
+# 推送不会触发本 workflow，故每日链路必须内置于 daily-crawl.yml）。本 workflow 负责
+# 人工改代码后的上线，以及首次部署。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

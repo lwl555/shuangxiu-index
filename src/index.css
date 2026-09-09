@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+  }
+  ::selection {
+    background: #16171a;
+    color: #fff;
+  }
+  a {
+    @apply text-ink underline decoration-line-2 underline-offset-2 hover:decoration-ink;
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-[1220px] px-5;
+  }
+  .rule {
+    @apply border-t border-line;
+  }
+  .kicker {
+    @apply text-2xs uppercase tracking-[0.14em] text-ink-3;
+  }
+  .h-sec {
+    @apply text-[15px] font-semibold tracking-tight;
+  }
+  .card {
+    @apply border border-line bg-paper;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center border border-ink bg-ink px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-85 disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center border border-line-2 bg-paper px-3.5 py-1.5 text-[13px] text-ink transition-colors hover:border-ink hover:bg-paper-3;
+  }
+  .field {
+    @apply w-full border border-line-2 bg-paper px-2.5 py-1.5 text-[13px] text-ink outline-none focus:border-ink;
+  }
+  .sel {
+    @apply h-[30px] border border-line-2 bg-paper px-2 text-[12px] text-ink outline-none focus:border-ink;
+  }
+  .tag {
+    @apply inline-flex items-center border px-1.5 py-[1px] text-2xs leading-4;
+  }
+  .num {
+    @apply font-mono tabular-nums;
+  }
+}
+
+/* 表格 */
+.tbl {
+  @apply w-full border-collapse text-[13px];
+}
+.tbl th {
+  @apply border-b border-line bg-paper-2 px-2.5 py-2 text-left text-2xs font-medium uppercase tracking-wide text-ink-3;
+}
+.tbl td {
+  @apply border-b border-line px-2.5 py-2 align-top;
+}
+.tbl tr:hover td {
+  @apply bg-paper-2;
+}
+
+/* 滚动条 */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}

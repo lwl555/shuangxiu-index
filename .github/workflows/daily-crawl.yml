@@ -1,0 +1,89 @@
+name: 每日自动采集与部署
+
+on:
+  schedule:
+    # 每天 UTC 22:00 = 北京时间次日 06:00，避开国内访问高峰
+    - cron: '0 22 * * *'
+  # 支持在 Actions 页面手动点一次
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: '逗号分隔的数据源，如 so360,bingRss,gov'
+        required: false
+        default: 'so360,bingRss,gov'
+      no_ai:
+        description: '填 1 则只做规则提取、不调用 AI（避开限流更稳）'
+        required: false
+        default: '1'
+
+# crawl 需要写回候选池；deploy 需要 Pages 部署权限
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: crawl-deploy
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 准备 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 运行采集
+        env:
+          CRAWL_SOURCES: ${{ github.event.inputs.sources || 'so360,bingRss,gov' }}
+          CRAWL_NO_AI: ${{ github.event.inputs.no_ai || '1' }}
+          # 走 GitHub Secrets；未配置则回落到脚本内置的默认端点（Agnes 代理 anon key）
+          CRAWL_AI_ENDPOINT: ${{ secrets.CRAWL_AI_ENDPOINT }}
+          CRAWL_AI_KEY: ${{ secrets.CRAWL_AI_KEY }}
+          CRAWL_AI_MODEL: ${{ secrets.CRAWL_AI_MODEL }}
+        run: node scripts/crawl.mjs
+
+      - name: 提交候选池
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/candidates.json
+          if git diff --staged --quiet; then
+            echo "本次无新增候选，跳过提交"
+          else
+            git commit -m "chore: 自动采集更新 $(date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
+
+  deploy:
+    needs: crawl
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出（含 crawl 提交的候选池）
+        uses: actions/checkout@v4
+
+      - name: 准备 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 安装依赖并构建
+        run: |
+          npm ci
+          npm run build
+
+      - name: 上传 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
