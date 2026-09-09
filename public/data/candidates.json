@@ -1,67 +1,17 @@
 {
-  "updatedAt": "2026-09-09T13:01:19.144Z",
+  "updatedAt": "2026-09-09T13:14:01.493Z",
   "stats": {
-    "rawCollected": 33,
-    "afterDedupe": 33,
-    "afterFilter": 22,
-    "extracted": 4,
-    "candidates": 2,
+    "rawCollected": 96,
+    "afterDedupe": 89,
+    "afterFilter": 0,
+    "extracted": 0,
+    "candidates": 0,
     "aiEnabled": false,
     "sources": [
       "so360",
+      "bingRss",
       "gov"
     ]
   },
-  "candidates": [
-    {
-      "id": "auto-mtu3xdig-zlbq9",
-      "name": "(中建材浚鑫(桐城)科技有限公司",
-      "industryId": "other",
-      "subIndustry": "",
-      "products": [],
-      "productTypes": [],
-      "province": "",
-      "city": "",
-      "ownership": "其他",
-      "restPattern": "shift",
-      "weeklyRestDays": null,
-      "weeklyHours": null,
-      "since": "-",
-      "scope": "",
-      "policy": "综合计算工时工作制公示 (中建材浚鑫(桐城)科技有限公司)_桐城市人民政府 中建材浚鑫(桐城)科技有限公司全体员工:你公司因",
-      "confidence": 40,
-      "evidence": "C",
-      "sourceUrl": "https://www.so.com/link?m=uUJJrRcaESg%2BOJPgTqmKDi%2Bzfpajd1Jn97nbKNk0vL29LN29ZkDx4rMb7w%2FIP9%2B9d9vIvwSvaADG6buLp5yG92k5f1Qxy9tZ1zHcQckBwot4GGyH%2BgkK3pqSfUEO1F91al70Qalh5ZyNbV4jXHFJs4mlV80x%2BbQIaF5QX9zHSt7Ve83U8n%2F4SnQ%2F7INop4QWY0ofPPRjb1KfZGqc7T8zdUbo3jxn%2BAhrsnp6oQC%2F5W9DIamu%2FCk%2BZzbtrlrMVqgaU572p%2Buoa06za3sVLG5ZiJh8%2FTdBV9KhS729lYTFI%2B0Q%3D",
-      "sourceTitle": "综合计算工时工作制公示 (中建材浚鑫(桐城)科技有限公司)_桐城市人民政府",
-      "sourceSite": "360 搜索",
-      "snippet": "中建材浚鑫(桐城)科技有限公司全体员工:你公司因",
-      "capturedAt": "2026-09-09",
-      "status": "pending"
-    },
-    {
-      "id": "auto-mtu3xdig-f1cb3",
-      "name": "关于安徽杭科光电有限公司",
-      "industryId": "other",
-      "subIndustry": "",
-      "products": [],
-      "productTypes": [],
-      "province": "",
-      "city": "",
-      "ownership": "其他",
-      "restPattern": "shift",
-      "weeklyRestDays": null,
-      "weeklyHours": null,
-      "since": "-",
-      "scope": "",
-      "policy": "关于安徽杭科光电有限公司 综合计算工时工作制公示 _桐城市人民政府 ",
-      "confidence": 40,
-      "evidence": "C",
-      "sourceUrl": "https://www.so.com/link?m=uIx3xROv2X43B6DQkxK3s21lC4UYeOfGmwuCme4Fc1xYezaROD61NmLbM44%2FUy9AoTi8lv2efAxJk%2FXOTjKd9n6WnvQxawqZowDJ%2BmaEJCRzNlynPCBV301Gm9eA8vnOl0oh%2FZ6wDK6d06uFVi39RCO5Y1izoprIftVupQ29AZDnppoDKHl3iD9mL02UNZT6k1qanDP6%2FsU%2FZKVUvBpwu76J7gFxZFHeVQHHjwMQ1LeQsGaTkLZBpbYwYD3ww1FOmifUkLp7%2BSecS2AzI8AF6wdI5Y2I6WK4YgEKD4GjwYTM%3D",
-      "sourceTitle": "关于安徽杭科光电有限公司 综合计算工时工作制公示 _桐城市人民政府",
-      "sourceSite": "360 搜索",
-      "snippet": "",
-      "capturedAt": "2026-09-09",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }
