@@ -45,6 +45,22 @@ export interface Company {
   note?: string
   evidence: EvidenceLevel
   sources: Source[]
+  /** 一句话亮点，用于卡片与详情展示（吸睛、真实，不夸大） */
+  slogan?: string
+  /** 亮点标签，如「反内卷标杆」「出口欧洲」「不降薪四天」 */
+  tags?: string[]
+  /** 成立年份，如 1984；null 表示未见公开披露 */
+  founded?: string
+  /** 总部所在城市 / 国家 */
+  hq?: string
+  /** 规模描述（员工数 / 营收 / 基地数等），公开可查者 */
+  scale?: string
+  /** 官方网站 */
+  website?: string
+  /** 工厂 / 生产基地 / 网点列表（制造、轮休、网点类企业重点填） */
+  factories?: { name: string; city: string; note?: string }[]
+  /** 详细介绍：发展背景、双休制度由来、行业地位等 */
+  detail?: string
 }
 
 export interface Industry {

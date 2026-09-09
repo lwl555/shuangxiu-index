@@ -8,7 +8,8 @@ export default function About() {
       <div className="border-b border-line pb-5">
         <h1 className="text-[22px] font-semibold tracking-tight">关于本站</h1>
         <p className="mt-1.5 max-w-[760px] text-[13px] leading-relaxed text-ink-2">
-          这是一个公开信息整理工具，目标是让「哪些企业真正执行双休」这件事变得可查、可比对、可溯源。
+          一个公开信息整理工具。我们想让「哪些公司真双休、哪些只是嘴上说说」这件事，变得可查、可比对、可溯源——
+          找工作、做消费选择，都能少踩点坑。
         </p>
       </div>
 
@@ -34,7 +35,7 @@ export default function About() {
         <h2 className="h-sec mb-3">为什么做这个</h2>
         <div className="space-y-3 text-[13.5px] leading-[1.85] text-ink-2">
           <p>
-            1995 年 5 月 1 日我国就确立了双休日工作制，但很长一段时间里，这条规定在不少行业停留在纸面。
+            双休日工作制 1995 年 5 月 1 日就写进了国家规定，可快三十年了，很多人还是没真正休上。
             2025 年以来情况开始变化：工信部、中国汽车工业协会先后表态整治「内卷式」竞争，
             一批头部企业主动取消大小周、强制下班、关闭周末食堂，加上
             <strong className="font-semibold">《欧盟市场禁止强迫劳动产品条例》2027 年底实施</strong>

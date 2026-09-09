@@ -2,6 +2,7 @@ import type { Company } from '../types'
 import { PATTERN_MAP, EVIDENCE_META } from '../data/restPatterns'
 import { INDUSTRY_MAP } from '../data/industries'
 import { VERDICT_STYLE, verdictOf, isShiftEquivalent } from '../lib/filters'
+import { mergeProfile } from '../data/profiles'
 import { Tag } from './Badge'
 
 export function SourceList({ sources }: { sources: Company['sources'] }) {
@@ -24,41 +25,45 @@ export function SourceList({ sources }: { sources: Company['sources'] }) {
   )
 }
 
-export default function CompanyCard({ c }: { c: Company }) {
-  const p = PATTERN_MAP[c.restPattern]
-  const v = verdictOf(c)
+export default function CompanyCard({ c, onOpen }: { c: Company; onOpen?: () => void }) {
+  const fc = mergeProfile(c)
+  const p = PATTERN_MAP[fc.restPattern]
+  const v = verdictOf(fc)
   const vs = VERDICT_STYLE[v]
-  const industry = INDUSTRY_MAP[c.industryId]
-  const ev = EVIDENCE_META[c.evidence]
+  const industry = INDUSTRY_MAP[fc.industryId]
+  const ev = EVIDENCE_META[fc.evidence]
 
   return (
-    <article className="card p-4 transition-colors hover:border-line-2">
+    <article className="card flex flex-col p-4 transition-colors hover:border-line-2">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <h3 className="text-[15px] font-semibold leading-tight tracking-tight">{c.name}</h3>
-            {c.brand && <span className="text-2xs text-ink-3">{c.brand}</span>}
+            <h3 className="text-[15px] font-semibold leading-tight tracking-tight">{fc.name}</h3>
+            {fc.brand && <span className="text-2xs text-ink-3">{fc.brand}</span>}
           </div>
+          {fc.slogan && (
+            <p className="mt-1 text-[12.5px] font-medium leading-snug text-ink-2">{fc.slogan}</p>
+          )}
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-2xs text-ink-3">
             <span>
-              {industry?.name ?? c.industryId} · {c.subIndustry}
+              {industry?.name ?? fc.industryId} · {fc.subIndustry}
             </span>
             <span>
-              {c.province}
-              {c.city !== c.province ? ` ${c.city}` : ''}
+              {fc.province}
+              {fc.city !== fc.province ? ` ${fc.city}` : ''}
             </span>
-            <span>{c.ownership}</span>
-            <span>生效 {c.since}</span>
+            <span>{fc.ownership}</span>
+            <span>生效 {fc.since}</span>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
           <Tag color={p.color} bd={p.color + '55'} bg="#fff">
             {p.name}
           </Tag>
           <Tag color={vs.fg} bg={vs.bg} bd={vs.bd}>
             {v}
           </Tag>
-          {isShiftEquivalent(c) && (
+          {isShiftEquivalent(fc) && (
             <Tag color="#0f766e" bg="#f0fdfa" bd="#99f6e4" title="每周休息不足 2 天，但通过压缩日工时使周均工时≤40 小时，按综合计算工时制等效达标">
               轮休等效
             </Tag>
@@ -66,25 +71,39 @@ export default function CompanyCard({ c }: { c: Company }) {
         </div>
       </div>
 
+      {/* 亮点标签 */}
+      {fc.tags && fc.tags.length > 0 && (
+        <div className="mt-2.5 flex flex-wrap gap-1">
+          {fc.tags.map((t) => (
+            <Tag key={t} color="#475569" bd="#e2e8f0" bg="#f8fafc">
+              {t}
+            </Tag>
+          ))}
+        </div>
+      )}
+
       {/* 核心数值 */}
       <div className="mt-3 grid grid-cols-3 divide-x divide-line border border-line bg-paper-2">
         <div className="px-3 py-2">
           <div className="kicker">周均休息</div>
           <div className="num mt-0.5 text-[17px] font-semibold leading-none">
-            {c.weeklyRestDays !== null ? c.weeklyRestDays : '—'}
+            {fc.weeklyRestDays !== null ? fc.weeklyRestDays : '—'}
             <span className="ml-0.5 text-2xs font-normal text-ink-3">天</span>
           </div>
         </div>
         <div className="px-3 py-2">
           <div className="kicker">周均工时</div>
           <div className="num mt-0.5 text-[17px] font-semibold leading-none">
-            {c.weeklyHours !== null ? c.weeklyHours : '—'}
+            {fc.weeklyHours !== null ? fc.weeklyHours : '—'}
             <span className="ml-0.5 text-2xs font-normal text-ink-3">小时</span>
           </div>
         </div>
         <div className="px-3 py-2">
-          <div className="kicker">覆盖范围</div>
-          <div className="mt-1 text-[12px] leading-snug text-ink-2">{c.scope}</div>
+          <div className="kicker">基地 / 网点</div>
+          <div className="num mt-0.5 text-[17px] font-semibold leading-none">
+            {fc.factories?.length ?? 0}
+            <span className="ml-0.5 text-2xs font-normal text-ink-3">个</span>
+          </div>
         </div>
       </div>
 
@@ -92,15 +111,15 @@ export default function CompanyCard({ c }: { c: Company }) {
       <div className="mt-3">
         <div className="kicker mb-1.5">主要产品</div>
         <div className="flex flex-wrap gap-1">
-          {c.products.slice(0, 8).map((x) => (
+          {fc.products.slice(0, 8).map((x) => (
             <Tag key={x} bg="#fafafa">
               {x}
             </Tag>
           ))}
-          {c.products.length > 8 && <Tag bg="#fafafa">+{c.products.length - 8}</Tag>}
+          {fc.products.length > 8 && <Tag bg="#fafafa">+{fc.products.length - 8}</Tag>}
         </div>
         <div className="mt-1.5 flex flex-wrap gap-1">
-          {c.productTypes.map((x) => (
+          {fc.productTypes.map((x) => (
             <Tag key={x} color="#1d4ed8" bg="#eff6ff" bd="#bfdbfe">
               {x}
             </Tag>
@@ -109,16 +128,21 @@ export default function CompanyCard({ c }: { c: Company }) {
       </div>
 
       {/* 制度 */}
-      <p className="mt-3 text-[13px] leading-relaxed text-ink-2">{c.policy}</p>
-      {c.note && (
-        <p className="mt-2 border-l-2 border-line-2 pl-2.5 text-[12px] leading-relaxed text-ink-3">{c.note}</p>
+      <p className="mt-3 max-h-[4.5rem] overflow-hidden text-[13px] leading-relaxed text-ink-2">{fc.policy}</p>
+      {fc.note && (
+        <p className="mt-2 border-l-2 border-line-2 pl-2.5 text-[12px] leading-relaxed text-ink-3">{fc.note}</p>
       )}
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-2.5">
         <Tag color={ev.color} bd={ev.color + '55'} title={ev.desc}>
-          {c.evidence} 级证据
+          {fc.evidence} 级证据
         </Tag>
-        <SourceList sources={c.sources} />
+        <button
+          onClick={onOpen}
+          className="text-2xs font-medium text-ink underline decoration-line-2 underline-offset-2 hover:decoration-ink"
+        >
+          查看详情 →
+        </button>
       </div>
     </article>
   )

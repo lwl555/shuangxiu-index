@@ -23,12 +23,12 @@ export default function Industry() {
       <div className="border-b border-line pb-5">
         <h1 className="text-[22px] font-semibold tracking-tight">行业对照</h1>
         <p className="mt-1.5 max-w-[760px] text-[13px] leading-relaxed text-ink-2">
-          这一页只呈现行业层面的公开统计与趋势，不指向具体企业，也不做企业间的横向排名。
-          判断某家企业是否双休，请看
+          哪些行业在改善、哪些还在卷？这一页只摆行业层面的公开数据和趋势，不点名、不排名。
+          想知道某家公司到底加不加班，去
           <Link to="/library" className="mx-0.5 text-ink">
             企业库
           </Link>
-          中的具体条目。
+          点它的名字。
         </p>
       </div>
 

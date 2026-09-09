@@ -6,6 +6,7 @@ import { REST_PATTERNS, PATTERN_MAP, EVIDENCE_META } from '../data/restPatterns'
 import { isCompliant, verdictOf, type Verdict } from '../lib/filters'
 import { loadReviewed } from '../lib/submit'
 import CompanyCard from '../components/CompanyCard'
+import CompanyDetail from '../components/CompanyDetail'
 import { Tag } from '../components/Badge'
 
 function Stat({ label, value, sub, accent }: { label: string; value: string | number; sub?: string; accent?: string }) {
@@ -36,8 +37,10 @@ function Bar({ label, count, total, color }: { label: string; count: number; tot
 export default function Dashboard() {
   const nav = useNavigate()
   const [recentOnly, setRecentOnly] = useState(false)
+  const [openId, setOpenId] = useState<string | null>(null)
 
   const all = useMemo(() => [...loadReviewed(), ...COMPANIES], [])
+  const openCompany = openId ? all.find((c) => c.id === openId) ?? null : null
   const stats = useMemo(() => {
     const verdicts: Record<Verdict, number> = { 达标: 0, 基本合规: 0, 改善中: 0, 未达标: 0, 数据不足: 0 }
     all.forEach((c) => (verdicts[verdictOf(c)] += 1))
@@ -59,25 +62,24 @@ export default function Dashboard() {
       {/* 头部 */}
       <section className="border-b border-line pb-6">
         <div className="kicker">双休 / 轮休 / 弹性工时 · 中国企业公开信息索引</div>
-        <h1 className="mt-2 max-w-[760px] text-[26px] font-semibold leading-[1.25] tracking-tight">
-          收录中国境内公开可查的执行双休、轮休、弹性或缩短工时制度的企业，
-          按行业与产品类型分类，每条都附来源。
+        <h1 className="mt-2 max-w-[780px] text-[26px] font-semibold leading-[1.25] tracking-tight">
+          周六到底能不能准时下班？我们替你把「真双休」的企业挑出来了。
         </h1>
-        <p className="mt-3 max-w-[760px] text-[13.5px] leading-relaxed text-ink-2">
-          「双休」并不等于周六、周日必须同时休。按《劳动法》第三十九条与劳部发〔1994〕503 号，
+        <p className="mt-3 max-w-[780px] text-[13.5px] leading-relaxed text-ink-2">
+          「双休」不等于周六周日必须同时休。按《劳动法》第三十九条与劳部发〔1994〕503 号，
           经审批实行<strong className="font-semibold">综合计算工时制</strong>的企业可以集中工作、集中休息、轮休轮调——
-          只要周期内平均周工时不超过法定标准、休息权得到保障，同样是合规的双休。本站据此判定，
-          而不是只看日历上的周六周日。
+          只要周期内平均周工时不超过法定标准、休息权得到保障，同样算数。本站据此判定，
+          每条都附来源，不为任何一家背书。
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Link to="/library" className="btn no-underline">
-            浏览企业库
+            看看哪些公司不加班
           </Link>
           <Link to="/policy" className="btn-ghost no-underline">
-            判定标准与法律依据
+            凭什么这么判
           </Link>
           <Link to="/submit" className="btn-ghost no-underline">
-            提交线索
+            爆料你司制度
           </Link>
         </div>
       </section>
@@ -206,7 +208,7 @@ export default function Dashboard() {
         </div>
         <div className="grid gap-3 lg:grid-cols-2">
           {(recentOnly ? all.filter((c) => c.since !== '—') : stats.recent).map((c) => (
-            <CompanyCard key={c.id} c={c} />
+            <CompanyCard key={c.id} c={c} onOpen={() => setOpenId(c.id)} />
           ))}
         </div>
       </section>
@@ -219,6 +221,8 @@ export default function Dashboard() {
           当前版本更新于 {LAST_UPDATED}，共覆盖 {Object.keys(INDUSTRY_MAP).length} 个行业分类。
         </p>
       </section>
+
+      {openCompany && <CompanyDetail c={openCompany} onClose={() => setOpenId(null)} />}
     </div>
   )
 }

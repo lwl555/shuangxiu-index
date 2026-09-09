@@ -6,12 +6,14 @@ import { REST_PATTERNS, PATTERN_MAP, EVIDENCE_META } from '../data/restPatterns'
 import { applyFilters, isCompliant, verdictOf, VERDICT_STYLE, EMPTY_FILTERS, type FilterState } from '../lib/filters'
 import { loadReviewed } from '../lib/submit'
 import CompanyCard from '../components/CompanyCard'
+import CompanyDetail from '../components/CompanyDetail'
 import { Tag } from '../components/Badge'
 const OWNERSHIPS = ['央企/国企', '民营企业', '外资企业', '合资企业', '上市公司', '其他']
 
 export default function Library() {
   const [params, setParams] = useSearchParams()
   const [view, setView] = useState<'card' | 'table'>('card')
+  const [openId, setOpenId] = useState<string | null>(null)
 
   const filters: FilterState = {
     ...EMPTY_FILTERS,
@@ -40,6 +42,7 @@ export default function Library() {
   }
 
   const all = useMemo(() => [...loadReviewed(), ...COMPANIES], [])
+  const openCompany = openId ? all.find((c) => c.id === openId) ?? null : null
   const provinces = useMemo(() => Array.from(new Set(all.map((c) => c.province))).sort(), [all])
   const results = useMemo(() => applyFilters(all, filters), [all, filters])
 
@@ -57,7 +60,8 @@ export default function Library() {
       <div className="border-b border-line pb-4">
         <h1 className="text-[22px] font-semibold tracking-tight">企业库</h1>
         <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-ink-2">
-          支持按行业、休息模式、产品关键词、地区筛选。搜索会同时匹配企业名称、产品、产品类型与制度描述。
+          {all.length} 家企业，按行业、产品、休息模式、地区随便挑。搜公司名、产品名、甚至「扫地机器人」都能命中。
+          挑到合适的，点开看它的档案、工厂分布和制度要点。
         </p>
       </div>
 
@@ -167,7 +171,7 @@ export default function Library() {
       ) : view === 'card' ? (
         <div className="mt-4 grid gap-3 lg:grid-cols-2">
           {results.map((c) => (
-            <CompanyCard key={c.id} c={c} />
+            <CompanyCard key={c.id} c={c} onOpen={() => setOpenId(c.id)} />
           ))}
         </div>
       ) : (
@@ -236,6 +240,8 @@ export default function Library() {
         「改善中」= 有明确加班管控措施但休息天数未公开；「数据不足」= 缺失关键数值，不做推测。
         当前共 {all.filter(isCompliant).length} 家判定达标。
       </p>
+
+      {openCompany && <CompanyDetail c={openCompany} onClose={() => setOpenId(null)} />}
     </div>
   )
 }

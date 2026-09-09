@@ -96,10 +96,10 @@ export default function Policy() {
   return (
     <div>
       <div className="border-b border-line pb-5">
-        <h1 className="text-[22px] font-semibold tracking-tight">政策与判定标准</h1>
+        <h1 className="text-[22px] font-semibold tracking-tight">凭什么这么判？法律依据与口径</h1>
         <p className="mt-1.5 max-w-[760px] text-[13px] leading-relaxed text-ink-2">
-          先把口径说清楚：本站不用「周六周日有没有一起休」来判断，而是用<strong className="font-semibold">周均休息天数</strong>
-          和<strong className="font-semibold">周均工时</strong>两个硬指标。下面是完整的法律依据。
+          很多人以为「双休」就是周六周日一起休，其实法律看的是<strong className="font-semibold">周均工时</strong>。
+          本站不用日历判断，而是用周均休息天数和周均工时两个硬指标。下面是把轮休判成合规的全部依据。
         </p>
       </div>
 

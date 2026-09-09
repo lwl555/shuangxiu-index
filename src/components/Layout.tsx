@@ -9,7 +9,7 @@ const NAV = [
   { to: '/policy', label: '政策与判定' },
   { to: '/industry', label: '行业对照' },
   { to: '/submit', label: '提交线索' },
-  { to: '/crawl', label: '自动采集' },
+  { to: '/crawl', label: '自动爬取' },
   { to: '/about', label: '关于' },
 ]
 
