@@ -14,6 +14,7 @@ export default function Library() {
   const [params, setParams] = useSearchParams()
   const [view, setView] = useState<'card' | 'table'>('card')
   const [openId, setOpenId] = useState<string | null>(null)
+  const [visible, setVisible] = useState(60)
 
   const filters: FilterState = {
     ...EMPTY_FILTERS,
@@ -39,6 +40,7 @@ export default function Library() {
     if (next.onlyCompliant) p.set('ok', '1')
     if (next.sort !== 'default') p.set('sort', next.sort)
     setParams(p, { replace: true })
+    setVisible(60)
   }
 
   const all = useMemo(() => [...loadReviewed(), ...COMPANIES], [])
@@ -170,11 +172,32 @@ export default function Library() {
         </div>
       ) : view === 'card' ? (
         <div className="mt-4 grid gap-3 lg:grid-cols-2">
-          {results.map((c) => (
+          {results.slice(0, visible).map((c) => (
             <CompanyCard key={c.id} c={c} onOpen={() => setOpenId(c.id)} />
           ))}
         </div>
-      ) : (
+      ) : null}
+
+      {view === 'card' && results.length > visible && (
+        <div className="mt-5 flex items-center justify-center gap-3">
+          <button className="btn" onClick={() => setVisible((v) => v + 60)}>
+            加载更多（剩余 {results.length - visible} 家）
+          </button>
+          {visible > 60 && (
+            <button className="btn-ghost" onClick={() => setVisible(60)}>
+              收起
+            </button>
+          )}
+        </div>
+      )}
+
+      {view === 'card' && results.length > 0 && (
+        <p className="mt-3 text-center text-2xs text-ink-3">
+          已显示 {Math.min(visible, results.length)} / {results.length} 家 · 卡片视图分页加载，切换「表格」可一览全部
+        </p>
+      )}
+
+      {view !== 'card' ? (
         <div className="scroll-thin mt-4 overflow-x-auto">
           <table className="tbl">
             <thead>
@@ -233,7 +256,7 @@ export default function Library() {
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
 
       <p className="mt-5 text-2xs leading-relaxed text-ink-3">
         判定说明：「达标」= 周均休息 ≥2 天且周均工时 ≤40 小时（轮休 / 调休按综合计算工时制周期等效计算）；

@@ -1,4 +1,5 @@
 import type { Company } from '../types'
+import { GENERATED_COMPANIES } from './companies.gen'
 
 /**
  * 数据说明
@@ -9,6 +10,13 @@ import type { Company } from '../types'
  *   B = 招聘平台公开信息、企业公开制度、多家媒体二次报道
  *   C = 社媒员工集中反馈，未获官方或媒体确认（标注为待核实）
  * weeklyRestDays / weeklyHours 为 null 表示该数字未见公开披露，不做推测。
+ *
+ * 扩编：数组末尾通过 `...GENERATED_COMPANIES` 并入由 scripts/gen-1000.mjs
+ * 自动生成的约 1087 家真实企业。它们按「行业普遍情况」归类——
+ * 央企 / 国企 / 外资 / 合资 / 上市公司多为 B（标准双休或加班管控），
+ * 民营 / 其他多为 C（轮班或待核实）；周均工时、周休天数一律留空（null），
+ * 在 filters 中判定为「数据不足」，不冒充「达标」。来源为企业官网或核实链接，
+ * 不伪造任何新闻报道 / 公告 URL。若要调整，改 scripts/gen-1000.mjs 后重跑即可。
  */
 
 export const COMPANIES: Company[] = [
@@ -2336,6 +2344,8 @@ export const COMPANIES: Company[] = [
       { title: '广州这些外企还是很值得去的！', url: 'https://www.hanlefang.net/xiu-ctgtxtnbnbgdcdxntg.html', date: '2026', publisher: ' hanlefang' },
     ],
   },
+  // ─────────────── 自动扩编（scripts/gen-1000.mjs 生成，约 1087 家）───────────────
+  ...GENERATED_COMPANIES,
 ]
 
 export const LAST_UPDATED = '2026-09-09'

@@ -56,8 +56,9 @@ export function isCompliant(c: Company): boolean {
     if (p.compliant === true && d !== null && d >= 2 && h <= HOURS_CEILING) return true
     return false
   }
-  // 缺工时数据时退化：休息模式合规 + 每周至少休 2 天
-  if (p.compliant === true) return d === null || d >= 2
+  // 缺工时数据时退化：必须有明确的周休天数（≥2）才算达标；
+  // 若连周休天数都没有，视为「数据不足」，不计入达标（避免无依据地给未核实企业贴「达标」标签）
+  if (p.compliant === true) return d !== null && d >= 2
   return false
 }
 
