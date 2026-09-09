@@ -1218,10 +1218,12 @@ function gen() {
   const out = []
   let n = 0
   const ids = new Set()
+  const OWN = new Set(['央企/国企', '民营企业', '外资企业', '合资企业', '上市公司', '其他'])
   for (const [industryId, list] of Object.entries(SEED)) {
     const def = DEF[industryId]
     for (const e of list) {
-      const [name, province, city, ownership, site, sub, products] = e
+      const [name, province, city, ownershipRaw, site, sub, products] = e
+      const ownership = OWN.has(ownershipRaw) ? ownershipRaw : '其他'
       const d = derive(ownership)
       let id = 'gen' + String(++n).padStart(4, '0')
       while (ids.has(id)) id = 'gen' + String(++n).padStart(4, '0')
