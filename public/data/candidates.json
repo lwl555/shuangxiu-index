@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-22T00:19:33.006Z",
+  "updatedAt": "2026-10-23T00:15:46.543Z",
   "stats": {
-    "rawCollected": 88,
-    "afterDedupe": 88,
+    "rawCollected": 23,
+    "afterDedupe": 23,
     "afterFilter": 0,
     "extracted": 0,
     "candidates": 0,
